@@ -16,7 +16,7 @@ int main() {
     };
     while (!response_equivalence["type"].is_null() && !response_equivalence["response"].is_null()) {
         /**
-         * Основную частЬ таблицы расширили и не получили новых строк =>
+         * Основную часть таблицы расширили и не получили новых строк =>
          * index_aux = index_aux_table - условие на запрос equivalence.
          **/
         while (table.index_aux < table.index_aux_table) {
