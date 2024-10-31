@@ -19,6 +19,7 @@ public:
     vector<string> final_states;
 
     void vis_automata();
+    void generate_image();
 };
 
 string concat(string prefix, string suffix);

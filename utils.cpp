@@ -2,6 +2,7 @@
 #include <fstream>
 #include "include/utils.h"
 #include <filesystem>
+#include <cstdlib>
 
 using namespace std;
 
@@ -53,6 +54,18 @@ void Automata::vis_automata() {
     outfile << "}\n";
 
     outfile.close();
+}
+
+void Automata::generate_image() {
+    string dot_file = "../output/automata.txt";
+    string image_file = "../output/automata.png";
+    string command = "dot -Tpng \"" + dot_file + "\" -o \"" + image_file + "\"";
+
+    int generate_result = system(command.c_str());
+
+    if (generate_result != 0) {
+        cerr << "Generate image failed: " << generate_result << std::endl;
+    }
 }
 
 string concat(string prefix, string suffix) {

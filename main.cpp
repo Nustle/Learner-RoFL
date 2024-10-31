@@ -1,5 +1,5 @@
 #include <iostream>
-#include <time.h>
+#include <ctime>
 #include "include/api.h"
 
 using namespace std;
@@ -39,10 +39,11 @@ int main() {
 
     create_output_directory();
     automata.vis_automata();
-    cout << "Итоговый автомат успешно записан в output." << endl;
+    automata.generate_image();
+    cout << "Итоговый автомат сохранён в output." << endl;
     cout << "Кол-во состояний: " << table.index_aux_table << endl;
 
     time(&end);
-    cout << "Learner угадал автомат за: " << time(difftime(end, start)) << endl;
+    cout << "Learner угадал лабиринт за: " << time(difftime(end, start)) << endl;
     return 0;
 }
