@@ -13,9 +13,11 @@ void Prefix::membership_row(vector<string> suffixes, unordered_map<string, int>&
     int suffix_end = (int)suffixes.size();
     for (int j = suffix_size; j < suffix_end; ++j) {
         int word_membership;
-        const string& suffix = suffixes[j];
-        string word = concat(prefix, suffix);
+        string word = concat(prefix, suffixes[j]);
+
         auto word_cache = membership_cache.find(word);
+
+        /** Если слово уже проверялось МАТом на membership, то берём ответ из кеша. **/
         if (word_cache != membership_cache.end()) {
             word_membership = word_cache->second;
         }  else {
@@ -123,6 +125,8 @@ Automata TableAux::make_automata() {
     Automata automata;
     for (pair<string, vector<int> > main_prefix : main_prefixes) {
         automata.transition[main_prefix.first];
+
+        /** Конкатенация префикса и ε принадлежит языку - условие финального состояния. **/
         if (main_prefixes[main_prefix.first][0] == 1) {
             automata.final_states.push_back(main_prefix.first);
         }

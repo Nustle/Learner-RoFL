@@ -28,6 +28,10 @@ class TableAux {
 public:
     vector<Prefix> prefixes;
     vector<string> suffixes;
+
+    /**
+     * Сохранённые ответы МАТа на запрос membership.
+     * **/
     unordered_map<string, int> membership_cache;
 
     /**
