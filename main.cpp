@@ -14,6 +14,7 @@ int main() {
             {"type", ""},
             {"response", ""}
     };
+
     while (!response_equivalence["type"].is_null() && !response_equivalence["response"].is_null()) {
         /**
          * Основную часть таблицы расширили и не получили новых строк =>
@@ -38,8 +39,9 @@ int main() {
     Automata automata = table.make_automata();
 
     create_output_directory();
-    automata.vis_automata();
+    automata.write_automata();
     automata.generate_image();
+
     cout << "Итоговый автомат сохранён в output." << endl;
     cout << "Кол-во состояний: " << table.index_aux_table << endl;
 

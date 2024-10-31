@@ -18,7 +18,7 @@ public:
     unordered_map<string, vector<string> > transition;
     vector<string> final_states;
 
-    void vis_automata();
+    void write_automata();
     void generate_image();
 };
 

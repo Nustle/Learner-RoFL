@@ -19,6 +19,8 @@ int membership(const string& word) {
         );
         if (response.status_code == 200) {
             json json_response = json::parse(response.text);
+
+            /** Таймаут для избежания сетевых ошибок, связанных с исчерпанием системных ресурсов. **/
             this_thread::sleep_for(std::chrono::milliseconds(3));
             return json_response["response"] ? 1 : 0;
         } else {

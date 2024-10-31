@@ -22,7 +22,7 @@ void create_output_directory() {
     }
 }
 
-void Automata::vis_automata() {
+void Automata::write_automata() {
     ofstream outfile("../output/automata.txt");
     if (!outfile.is_open()) {
         cerr << "Open file error.\n";
