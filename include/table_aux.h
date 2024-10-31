@@ -15,7 +15,7 @@ public:
     /**
      * Заполняет строку текущего префикса значениями 0 и 1 в таблице Майхилла-Неурода.
      **/
-    void membership_row(vector<string> suffixes);
+    void membership_row(vector<string> suffixes, unordered_map<string, int>& membership_cache);
 private:
     /**
      * При добавлении нового суффикса в таблицу, дополняем строку таблицы текущего префикса
@@ -28,6 +28,7 @@ class TableAux {
 public:
     vector<Prefix> prefixes;
     vector<string> suffixes;
+    unordered_map<string, int> membership_cache;
 
     /**
      * Индекс последнего префикса в таблице, который был расширен символами алфавита L и R.

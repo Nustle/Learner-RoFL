@@ -9,12 +9,20 @@ Prefix::Prefix(const string& prefix) {
     this->prefix = prefix;
 }
 
-void Prefix::membership_row(vector<string> suffixes) {
+void Prefix::membership_row(vector<string> suffixes, unordered_map<string, int>& membership_cache) {
     int suffix_end = (int)suffixes.size();
     for (int j = suffix_size; j < suffix_end; ++j) {
+        int word_membership;
         const string& suffix = suffixes[j];
         string word = concat(prefix, suffix);
-        row.push_back(membership(word));
+        auto word_cache = membership_cache.find(word);
+        if (word_cache != membership_cache.end()) {
+            word_membership = word_cache->second;
+        }  else {
+            word_membership = membership(word);
+            membership_cache[word] = word_membership;
+        }
+        row.push_back(word_membership);
     }
     suffix_size = suffix_end;
 }
@@ -25,7 +33,7 @@ TableAux::TableAux() {
     index_aux_table++;
     suffixes.push_back("ε");
     suffixes_unique["ε"] = true;
-    prefixes[0].membership_row(suffixes);
+    prefixes[0].membership_row(suffixes, membership_cache);
 }
 
 void TableAux::aux_insert() {
@@ -38,7 +46,7 @@ void TableAux::aux_insert() {
             /** Проверка на уникальность префикса в таблице. **/
             if (prefixes_unique.find(prefix_aux.prefix) == prefixes_unique.end()) {
                 prefixes_unique[prefix_aux.prefix] = true;
-                prefix_aux.membership_row(suffixes);
+                prefix_aux.membership_row(suffixes, membership_cache);
                 prefixes.push_back(prefix_aux);
             }
         }

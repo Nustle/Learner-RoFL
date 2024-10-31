@@ -2,6 +2,8 @@
 #include <cpr/cpr.h>
 #include "include/api.h"
 #include "include/utils.h"
+#include <thread>
+#include <chrono>
 
 using namespace std;
 using json = nlohmann::json;
@@ -17,7 +19,8 @@ int membership(const string& word) {
         );
         if (response.status_code == 200) {
             json json_response = json::parse(response.text);
-            return int(json_response["response"]);
+            this_thread::sleep_for(std::chrono::milliseconds(3));
+            return json_response["response"] ? 1 : 0;
         } else {
             cerr << "Check word error " << response.status_code << ": " << response.text << endl;
             return -1;

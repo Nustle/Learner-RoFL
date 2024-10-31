@@ -1,5 +1,7 @@
 #include <iostream>
+#include <fstream>
 #include "include/utils.h"
+#include <filesystem>
 
 using namespace std;
 
@@ -7,30 +9,50 @@ vector<string> Alphabet {
         "L", "R"
 };
 
-void Automata::vis_automata() {
-    cout << "digraph {\n";
-    cout << "\trankdir = LR\n";
-    cout << "\tstart [shape = point]\n";
-    for (const string& state : final_states) {
-        cout << "\t" << state << " [shape = doublecircle]\n";
+void create_output_directory() {
+    filesystem::path output_dir = "../output";
+    if (!filesystem::exists(output_dir)) {
+        try {
+            filesystem::create_directories(output_dir);
+        } catch (const filesystem::filesystem_error &e) {
+            cerr << "Create directory failed: " << e.what() << "\n";
+            return;
+        }
     }
-    cout << "\tstart -> " << start << "\n";
+}
+
+void Automata::vis_automata() {
+    ofstream outfile("../output/automata.txt");
+    if (!outfile.is_open()) {
+        cerr << "Open file error.\n";
+        return;
+    }
+
+    outfile << "digraph {\n";
+    outfile << "\trankdir = LR\n";
+    outfile << "\tstart [shape = point]\n";
+    for (const string& state : final_states) {
+        outfile << "\t" << state << " [shape = doublecircle]\n";
+    }
+    outfile << "\tstart -> " << start << "\n";
 
     for (pair<string, vector<string> > transition_pair : transition) {
         string state = transition_pair.first;
         vector<string> state_transition = transition_pair.second;
 
         if (state_transition[0] == state_transition[1]) {
-            cout << "\t" << state << " -> " << state_transition[0]
+            outfile << "\t" << state << " -> " << state_transition[0]
                  << " [label = \"" << alphabet[0] << ", " << alphabet[1] << "\"]\n";
         } else {
-            cout << "\t" << state << " -> " << state_transition[0]
+            outfile << "\t" << state << " -> " << state_transition[0]
                  << " [label = \"" << alphabet[0] << "\"]\n";
-            cout << "\t" << state << " -> " << state_transition[1]
+            outfile << "\t" << state << " -> " << state_transition[1]
                  << " [label = \"" << alphabet[1] << "\"]\n";
         }
     }
-    cout << "}\n";
+    outfile << "}\n";
+
+    outfile.close();
 }
 
 string concat(string prefix, string suffix) {
@@ -50,4 +72,23 @@ bool compare_rows(vector<int> row_aux, vector<int> row_main) {
         }
     }
     return true;
+}
+
+string time(double elapsed_seconds) {
+    string time_learning;
+    int seconds = (int)(elapsed_seconds + 0.5);
+    int hours = seconds / 3600;
+    int minutes = (seconds % 3600) / 60;
+    seconds %= 60;
+
+    if (hours > 0) {
+        time_learning += to_string(hours) + "h";
+    }
+    if (minutes > 0 || (hours > 0 && seconds > 0)) {
+        time_learning += to_string(minutes) + "m";
+    }
+    if (seconds > 0 || (hours == 0 && minutes == 0)) {
+        time_learning += to_string(seconds) + "s";
+    }
+    return time_learning;
 }

@@ -34,4 +34,7 @@ string array_to_string(vector<T> a) {
     return ans.str();
 }
 
+void create_output_directory();
+
+string time(double elapsed_seconds);
 #endif

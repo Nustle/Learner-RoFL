@@ -23,22 +23,26 @@ int main() {
             table.aux_insert();
             table.aux_pop();
         }
+        cout << "Количество состояний угадано: " << table.index_aux_table << endl;
+        cout << "----------------------------" << endl;
         response_equivalence = equivalence(table);
         if (!response_equivalence["response"].is_null()) {
             table.add_suffixes(response_equivalence["response"]);
             for (int i = 0; i < table.prefixes.size(); ++i) {
-                table.prefixes[i].membership_row(table.suffixes);
+                table.prefixes[i].membership_row(table.suffixes, table.membership_cache);
             }
             table.aux_pop();
         }
     }
 
     Automata automata = table.make_automata();
-    cout << "---- Итоговый автомат ----" << endl;
+
+    create_output_directory();
     automata.vis_automata();
+    cout << "Итоговый автомат успешно записан в output." << endl;
     cout << "Кол-во состояний: " << table.index_aux_table << endl;
 
     time(&end);
-    printf("Learner угадал автомат за: %f секунд\n", difftime(end, start));
+    cout << "Learner угадал автомат за: " << time(difftime(end, start)) << endl;
     return 0;
 }
